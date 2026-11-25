@@ -23,7 +23,7 @@
 					description="PLG_SYSTEM_MODULESNOWHERE_RULES_DESC"
 					formsource="plugins/system/modulesnowhere/forms/rule.xml"
 					multiple="true"
-					layout="joomla.form.field.subform.repeatable-table"
+					layout="joomla.form.field.subform.repeatable"
 					min="0"
 					max="100"
 					buttons="add,remove,move"
