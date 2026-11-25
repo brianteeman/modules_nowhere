@@ -97,7 +97,13 @@ final class ModulesNowhere extends CMSPlugin implements SubscriberInterface
         }
 
         $excludedModules   = array_map('intval', (array) ($rule['modules'] ?? []));
-        $excludedPositions = array_map('strval', (array) ($rule['positions'] ?? []));
+        $excludedPositions = [];
+
+        foreach ((array) ($rule['positions'] ?? []) as $positionRule) {
+            if (is_array($positionRule) && !empty($positionRule['position'])) {
+                $excludedPositions[] = (string) $positionRule['position'];
+            }
+        }
 
         if (!$excludedModules && !$excludedPositions) {
             return;
