@@ -15,7 +15,7 @@ The repository contains the initial project specification and Joomla 6 system pl
 - Apply exclusions only to individual Joomla articles: `option=com_content` and `view=article`.
 - Apply rules only when the article was accessed through an eligible menu item:
   - Category Blog: `option=com_content&view=category&layout=blog`.
-  - List All Categories (Category List): `option=com_content&view=categories`.
+  - Category List: `option=com_content&view=category` using the default layout.
 - Identify the applicable rule by the menu item ID (`Itemid`) in the article request.
 - Do not infer rules from the article's category or from parent menu items.
 - Allow one rule per menu item.
@@ -72,7 +72,7 @@ flowchart TD
 
 - The `Itemid` is the rule key. SEF URLs and non-SEF URLs must both be supported; the implementation should use Joomla's resolved request/menu data rather than parse a URL string.
 - The plugin subscribes to `onAfterCleanModuleList` using Joomla's typed `AfterCleanModuleListEvent` and must call `updateModules()` with the filtered module array.
-- Joomla component menu items have the general menu item type `component`. The plugin identifies the supported menu item by inspecting its `com_content` link parameters: `view=category&layout=blog` for Category Blog, or `view=categories` for List All Categories. An article's category alone must never select a rule.
+- Joomla component menu items have the general menu item type `component`. The plugin identifies the supported menu item by inspecting its `com_content` link parameters: `view=category&layout=blog` for Category Blog, or `view=category` with the default layout for Category List. An article's category alone must never select a rule.
 - Filtering must happen before module rendering. Hiding rendered module HTML with CSS or output buffering is not acceptable.
 - Module exclusions should use module instance IDs, not module titles or module extension names.
 - Position exclusions should compare the module's assigned position with the configured positions.
