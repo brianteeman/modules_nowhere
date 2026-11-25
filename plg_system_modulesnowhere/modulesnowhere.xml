@@ -17,6 +17,9 @@
         <language tag="en-GB">language/en-GB/plg_system_modulesnowhere.ini</language>
         <language tag="en-GB">language/en-GB/plg_system_modulesnowhere.sys.ini</language>
     </languages>
+    <updateservers>
+        <server type="extension" name="Modules Nowhere Updates">https://raw.githubusercontent.com/brianteeman/modules_nowhere/main/update.xml</server>
+    </updateservers>
     <config>
         <fields name="params">
             <fieldset name="rules" label="PLG_SYSTEM_MODULESNOWHERE_FIELDSET_RULES">
