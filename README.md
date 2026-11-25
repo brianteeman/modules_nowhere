@@ -6,7 +6,7 @@ The plugin is intended to provide the functionality described in [Modules Nowher
 
 ## Status
 
-The repository contains the initial project specification and the Joomla 6 system plugin skeleton. The filtering logic and administrator configuration have not yet been implemented.
+The repository contains the initial project specification and Joomla 6 system plugin skeleton. Frontend article/menu-item matching and the module-list filtering mechanism are implemented; administrator configuration is still to be added.
 
 ## Requirements and behaviour
 
@@ -14,8 +14,8 @@ The repository contains the initial project specification and the Joomla 6 syste
 - A system plugin operating on the frontend.
 - Apply exclusions only to individual Joomla articles: `option=com_content` and `view=article`.
 - Apply rules only when the article was accessed through an eligible menu item:
-  - Category Blog (`blog_category`).
-  - Category List (`category_list`).
+  - Category Blog: `option=com_content&view=category&layout=blog`.
+  - List All Categories (Category List): `option=com_content&view=categories`.
 - Identify the applicable rule by the menu item ID (`Itemid`) in the article request.
 - Do not infer rules from the article's category or from parent menu items.
 - Allow one rule per menu item.
@@ -39,7 +39,7 @@ The same category may be linked from more than one menu item. Each menu item can
 
 ## Configuration
 
-The administrator configuration will provide a repeatable list of rules. Each rule will contain:
+The administrator configuration will provide a repeatable list of rules, stored by menu item ID. Each rule will contain:
 
 1. A menu item selector, restricted to the supported Category Blog and Category List menu items.
 2. A module selector allowing one or more individual modules to be excluded.
@@ -72,7 +72,7 @@ flowchart TD
 
 - The `Itemid` is the rule key. SEF URLs and non-SEF URLs must both be supported; the implementation should use Joomla's resolved request/menu data rather than parse a URL string.
 - The plugin subscribes to `onAfterCleanModuleList` using Joomla's typed `AfterCleanModuleListEvent` and must call `updateModules()` with the filtered module array.
-- The active menu item must be checked against the supported menu item types. An article's category alone must never select a rule.
+- Joomla component menu items have the general menu item type `component`. The plugin identifies the supported menu item by inspecting its `com_content` link parameters: `view=category&layout=blog` for Category Blog, or `view=categories` for List All Categories. An article's category alone must never select a rule.
 - Filtering must happen before module rendering. Hiding rendered module HTML with CSS or output buffering is not acceptable.
 - Module exclusions should use module instance IDs, not module titles or module extension names.
 - Position exclusions should compare the module's assigned position with the configured positions.
