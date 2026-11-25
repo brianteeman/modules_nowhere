@@ -6,7 +6,7 @@ The plugin is intended to provide the functionality described in [Modules Nowher
 
 ## Status
 
-The repository contains the initial project specification and Joomla 6 system plugin skeleton. Frontend article/menu-item matching and the module-list filtering mechanism are implemented; administrator configuration is still to be added.
+The repository contains the initial project specification and Joomla 6 system plugin skeleton. Frontend article/menu-item matching, module-list filtering, and the initial repeatable administrator rule configuration are implemented. The extension still requires installation and runtime testing on Joomla 6.
 
 ## Requirements and behaviour
 
@@ -45,7 +45,7 @@ The administrator configuration will provide a repeatable list of rules, stored 
 2. A module selector allowing one or more individual modules to be excluded.
 3. A module-position selector allowing one or more positions to be excluded.
 
-A menu item must appear in no more than one rule. A rule may contain module exclusions, position exclusions, both, or neither.
+A menu item should appear in no more than one rule. A rule may contain module exclusions, position exclusions, both, or neither.
 
 ## Processing workflow
 
