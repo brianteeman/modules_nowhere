@@ -2,9 +2,10 @@
 
 A Joomla 6 system plugin that allows you to exclude selected modules and module positions from individual article pages, depending on the menu item used to access the article.
 
-[Modules Nowhere](https://brian.teeman.net/joomla/896-modules-nowhere) was created to provide this functionality without having to edit template files or create template overrides.
+Inspired by my article [Modules Nowhere](https://brian.teeman.net/joomla/896-modules-nowhere) this plugin was created to provide this functionality without having to edit template files or create template overrides.
 
-<!-- Add screenshot here -->
+<img width="1200" height="525" alt="woman wiping the screen to remove something" src="https://github.com/user-attachments/assets/6b500613-81f8-4a58-8160-b12d1fe22867" />
+
 
 ## Configuration
 
