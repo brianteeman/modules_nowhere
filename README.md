@@ -43,7 +43,7 @@ The administrator configuration provides a repeatable list of rules, stored by m
 
 1. A standard Joomla menu item selector. It lists published site menu items; only Category Blog and Category List selections are supported by the plugin, and other menu item types are ignored.
 2. A module selector allowing one or more individual modules to be excluded.
-3. A repeatable list of standard Joomla module-position fields, allowing one or more positions to be excluded.
+3. A repeatable list of Joomla's `ModulesPosition` dropdown field. Each row selects one existing site module position; add another row for each additional position.
 
 A menu item should appear in no more than one rule. A rule may contain module exclusions, position exclusions, both, or neither.
 
