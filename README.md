@@ -1,88 +1,56 @@
 # Modules Nowhere
 
-A Joomla 6 system plugin that prevents selected modules from appearing on individual article pages, depending on the menu item through which the article was accessed.
+A Joomla 6 system plugin that allows you to exclude selected modules and module positions from individual article pages, depending on the menu item used to access the article.
 
-The plugin is intended to provide the functionality described in [Modules Nowhere](https://brian.teeman.net/joomla/896-modules-nowhere) without requiring template modifications.
+[Modules Nowhere](https://brian.teeman.net/joomla/896-modules-nowhere) was created to provide this functionality without having to edit template files or create template overrides.
 
-## Status
-
-The repository contains the initial project specification and Joomla 6 system plugin skeleton. Frontend article/menu-item matching, module-list filtering, and the initial repeatable administrator rule configuration are implemented. The extension still requires installation and runtime testing on Joomla 6.
-
-## Requirements and behaviour
-
-- Joomla 6 only.
-- A system plugin operating on the frontend.
-- Apply exclusions only to individual Joomla articles: `option=com_content` and `view=article`.
-- Apply rules only when the article was accessed through an eligible menu item:
-  - Category Blog: `option=com_content&view=category&layout=blog`.
-  - Category List: `option=com_content&view=category` using the default layout.
-- Identify the applicable rule by the menu item ID (`Itemid`) in the article request.
-- Do not infer rules from the article's category or from parent menu items.
-- Allow one rule per menu item.
-- Each rule can select individual modules to exclude and module positions to exclude. Either or both selections may be empty.
-- Excluding a module position excludes all modules assigned to that position.
-- If there is no rule for the menu item, leave Joomla's normal module list and rendering behaviour unchanged.
-- Do not affect category blog pages, category list pages, other component views, or articles reached through other menu item types.
-
-### Example
-
-Suppose the site has two Category Blog menu items:
-
-| Menu item | Itemid | Modules excluded |
-|---|---:|---|
-| Blog – Joomla | 102 | ABC |
-| Blog – News | 103 | DEF |
-
-An article opened with `Itemid=102` uses the Joomla rule and excludes module ABC. An article opened with `Itemid=103` uses the News rule and excludes module DEF.
-
-The same category may be linked from more than one menu item. Each menu item can have its own independent rule.
+<!-- Add screenshot here -->
 
 ## Configuration
 
-The administrator configuration provides a repeatable list of rules, stored by menu item ID. Each rule contains:
+Add a rule for each Category Blog or Category List menu item that should have different module exclusions. Each rule contains:
 
-1. A standard Joomla menu item selector. It lists published site menu items; only Category Blog and Category List selections are supported by the plugin, and other menu item types are ignored.
-2. A module selector allowing one or more individual modules to be excluded.
-3. A repeatable list of Joomla's `ModulesPosition` dropdown field. Each row selects one existing site module position; add another row for each additional position.
+- **Menu Item** – select the published frontend Category Blog or Category List menu item that the rule applies to.
+- **Exclude Modules** – select one or more individual published modules to exclude.
+- **Exclude Module Positions** – add one or more rows and select the module positions to exclude. Every module assigned to a selected position is excluded.
 
-A menu item should appear in no more than one rule. A rule may contain module exclusions, position exclusions, both, or neither.
+A rule can exclude individual modules, module positions, or both. You do not need to configure both types of exclusion.
 
-## Processing workflow
+## How It Works
 
-The implementation uses Joomla's `onAfterCleanModuleList` system plugin event to adjust the module list before modules are rendered. Joomla dispatches an `AfterCleanModuleListEvent` after `ModuleHelper::cleanModuleList()` and before returning the module list. The event exposes `getModules()` and `updateModules(array $modules)`, allowing the plugin to replace the list without relying on legacy by-reference listener arguments.
+Rules are matched using the menu item ID (`Itemid`) carried by the article request.
 
-```mermaid
-flowchart TD
-    A[Frontend request] --> B{com_content article view?}
-    B -- No --> Z[Leave Joomla behaviour unchanged]
-    B -- Yes --> C[Read Itemid from request]
-    C --> D[Resolve menu item]
-    D --> E{Eligible menu item type?}
-    E -- No --> Z
-    E -- Yes --> F[Find rule for this menu item ID]
-    F --> G{Matching rule exists?}
-    G -- No --> Z
-    G -- Yes --> H[Get excluded module IDs and positions]
-    H --> I[Filter matching modules from cleaned module list]
-    I --> J[Return filtered module list]
-    J --> K[Joomla renders remaining modules]
-```
+The plugin only acts on individual Joomla articles opened through a Category Blog or Category List menu item. It does not apply exclusions to the category listing page itself.
 
-## Important implementation notes
+Each menu item has its own independent rule. This means that the same article can display different modules depending on the menu item used to reach it. For example, if an article is accessible through two different category menu items, each menu item can have a different set of exclusions.
 
-- The `Itemid` is the rule key. SEF URLs and non-SEF URLs must both be supported; the implementation should use Joomla's resolved request/menu data rather than parse a URL string.
-- The plugin subscribes to `onAfterCleanModuleList` using Joomla's typed `AfterCleanModuleListEvent` and must call `updateModules()` with the filtered module array.
-- Joomla component menu items have the general menu item type `component`. The plugin identifies the supported menu item by inspecting its `com_content` link parameters: `view=category&layout=blog` for Category Blog, or `view=category` with the default layout for Category List. An article's category alone must never select a rule.
-- Filtering must happen before module rendering. Hiding rendered module HTML with CSS or output buffering is not acceptable.
-- Module exclusions should use module instance IDs, not module titles or module extension names.
-- Position exclusions should compare the module's assigned position with the configured positions.
-- The plugin must fail safely: when the request, menu item, or rule does not qualify, it must not change the module list.
+Rules are not inherited from parent menu items, and the plugin does not make decisions based on the article's category.
 
-## Out of scope
+## Rule Order
 
-- Joomla 5 compatibility.
-- Excluding modules from category blog or category list pages themselves.
-- Exclusions based solely on article category.
-- Inheriting rules from parent menu items.
-- Multiple rules for the same menu item.
-- Template overrides or template-specific code.
+Each menu item should appear only once in the rules. Rules are matched by menu item ID, so the order of the rules does not affect which rule is selected.
+
+## Fallback
+
+If the article was not opened through a supported Category Blog or Category List menu item, or if no rule exists for that menu item, the plugin leaves Joomla's normal module list unchanged.
+
+If a rule has no modules or positions selected, it has no exclusions to apply.
+
+## Scope
+
+The plugin affects frontend individual article pages only.
+
+It does not affect:
+
+- Category Blog or Category List pages themselves.
+- Articles accessed through a Single Article menu item or another unsupported menu item type.
+- Administrator pages or administrator modules.
+- Other Joomla components or views.
+
+The plugin removes modules from Joomla's module list before they are rendered. It does not hide module output with CSS, JavaScript, or output buffering, and it does not require template changes.
+
+## Requirements
+
+- Joomla 6.
+- A Joomla system plugin enabled on the site.
+
