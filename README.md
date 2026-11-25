@@ -39,11 +39,11 @@ The same category may be linked from more than one menu item. Each menu item can
 
 ## Configuration
 
-The administrator configuration will provide a repeatable list of rules, stored by menu item ID. Each rule will contain:
+The administrator configuration provides a repeatable list of rules, stored by menu item ID. Each rule contains:
 
-1. A menu item selector, restricted to the supported Category Blog and Category List menu items.
+1. A standard Joomla menu item selector. It lists published site menu items; only Category Blog and Category List selections are supported by the plugin, and other menu item types are ignored.
 2. A module selector allowing one or more individual modules to be excluded.
-3. A module-position selector allowing one or more positions to be excluded.
+3. A repeatable list of standard Joomla module-position fields, allowing one or more positions to be excluded.
 
 A menu item should appear in no more than one rule. A rule may contain module exclusions, position exclusions, both, or neither.
 
