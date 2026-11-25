@@ -6,7 +6,7 @@
 			type="sql"
 			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_MENUITEM_LABEL"
 			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_MENUITEM_DESC"
-			query="SELECT id, title FROM #__menu WHERE client_id = 0 AND published = 1 AND ((link LIKE '%option=com_content&amp;view=category&amp;layout=blog%' ) OR (link LIKE '%option=com_content&amp;view=categories%')) ORDER BY menutype, lft"
+			query="SELECT id, title FROM #__menu WHERE client_id = 0 AND published = 1 AND link LIKE '%option=com_content&amp;view=category%' ORDER BY menutype, lft"
 			key_field="id"
 			value_field="title"
 			required="true"
