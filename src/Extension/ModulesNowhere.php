@@ -74,7 +74,7 @@ final class ModulesNowhere extends CMSPlugin implements SubscriberInterface
 
         // The repeatable subform stores rules as a numerically indexed array.
         // Find the single rule assigned to this menu item ID.
-        $rules = $this->params->get('rules', []);
+        $rules = $this->normaliseConfigValue($this->params->get('rules', []));
 
         if (!is_array($rules)) {
             return;
@@ -127,6 +127,31 @@ final class ModulesNowhere extends CMSPlugin implements SubscriberInterface
         ));
 
         $event->updateModules($modules);
+    }
+
+    /**
+     * Convert nested Registry objects and arrays into a consistent array structure.
+     *
+     * Joomla's Registry can return JSON objects as stdClass instances. Normalising
+     * the complete value allows repeatable subform data to be handled consistently.
+     *
+     * @param   mixed  $value  The configuration value.
+     *
+     * @return  mixed
+     */
+    private function normaliseConfigValue(mixed $value): mixed
+    {
+        if (is_object($value)) {
+            $value = get_object_vars($value);
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $key => $item) {
+                $value[$key] = $this->normaliseConfigValue($item);
+            }
+        }
+
+        return $value;
     }
 
     /**
