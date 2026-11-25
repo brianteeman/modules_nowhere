@@ -21,6 +21,16 @@ use Joomla\Event\SubscriberInterface;
 final class ModulesNowhere extends CMSPlugin implements SubscriberInterface
 {
     /**
+     * Constructor.
+     */
+    public function __construct(array $config, CMSApplicationInterface $app)
+    {
+        parent::__construct($config);
+
+        $this->setApplication($app);
+    }
+
+    /**
      * Subscribe to the event fired after Joomla has cleaned the module list.
      */
     public static function getSubscribedEvents(): array
