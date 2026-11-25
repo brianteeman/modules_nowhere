@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="rule">
+		<field
+			name="menuitem"
+			type="sql"
+			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_MENUITEM_LABEL"
+			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_MENUITEM_DESC"
+			query="SELECT id, title FROM #__menu WHERE client_id = 0 AND published = 1 AND ((link LIKE '%option=com_content&amp;view=category&amp;layout=blog%' ) OR (link LIKE '%option=com_content&amp;view=categories%')) ORDER BY menutype, lft"
+			key_field="id"
+			value_field="title"
+			required="true"
+			filter="integer"
+			layout="joomla.form.field.list-fancy-select"
+		/>
+		<field
+			name="modules"
+			type="sql"
+			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_MODULES_LABEL"
+			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_MODULES_DESC"
+			query="SELECT id, CONCAT(title, ' (', id, ')') AS module_title FROM #__modules WHERE client_id = 0 AND published = 1 ORDER BY title"
+			key_field="id"
+			value_field="module_title"
+			multiple="true"
+			filter="intarray"
+			layout="joomla.form.field.list-fancy-select"
+		/>
+		<field
+			name="positions"
+			type="sql"
+			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_POSITIONS_LABEL"
+			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_POSITIONS_DESC"
+			query="SELECT DISTINCT position AS value, position AS text FROM #__modules WHERE client_id = 0 AND position != '' ORDER BY position"
+			key_field="value"
+			value_field="text"
+			multiple="true"
+			filter="string"
+			layout="joomla.form.field.list-fancy-select"
+		/>
+	</fieldset>
+</form>
