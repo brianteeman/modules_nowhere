@@ -54,3 +54,39 @@ The plugin removes modules from Joomla's module list before they are rendered. I
 - Joomla 6.
 - A Joomla system plugin enabled on the site.
 
+## Update Server
+
+The plugin registers its update site in the installation manifest. Joomla checks the update metadata in [update.xml](update.xml), which points to the installable ZIP attached to the latest [GitHub Release](https://github.com/brianteeman/modules_nowhere/releases).
+
+The ZIP attached to a release is the Joomla installation package. The automatically generated GitHub source archives are not installable plugin packages.
+
+## Building a New Release
+
+Releases are built and published by the GitHub Actions workflow [Build and publish plugin release](.github/workflows/release.yml).
+
+For each new release:
+
+1. Make and test the changes on a development branch.
+2. Merge the changes into `main`.
+3. Update the extension version in both places:
+   - `plg_system_modulesnowhere/modulesnowhere.xml` — the plugin manifest's `<version>` value.
+   - `update.xml` — the `<version>` value inside the update entry.
+4. Commit and push those version changes to `main`.
+5. Create a Git tag using the same version, prefixed with `v`. For example, for version `1.1.0`:
+   ```bash
+   git checkout main
+   git pull
+   git tag v1.1.0
+   git push origin v1.1.0
+   ```
+6. GitHub Actions runs automatically when the tag is pushed. It checks out the tagged source, builds `plg_system_modulesnowhere.zip`, and attaches the package to the matching GitHub Release. If the release does not already exist, the workflow creates it with a title in the format **Modules Nowhere Plugin v1.1.0**, using the actual tag name in place of `v1.1.0`.
+
+### Manual release steps
+
+No manual ZIP creation or upload is normally required. Check the workflow run under the repository's **Actions** tab and confirm it completes successfully. Then check the matching release under **Releases** and verify that it contains `plg_system_modulesnowhere.zip`.
+
+If a GitHub Release was created manually before the workflow ran, the workflow uploads the package to that existing release and replaces an asset with the same filename if necessary.
+
+To run the workflow manually (for example, to retry packaging an existing tag), open **Actions → Build and publish plugin release → Run workflow**, enter the tag (such as `v1.1.0`), and start the run. The tag must already exist and point to the source you want to package.
+
+After publishing, Joomla can discover the new version through its extension update check. The update XML uses the latest GitHub Release download URL, so keep the manifest version, update XML version, and release tag in sync.
