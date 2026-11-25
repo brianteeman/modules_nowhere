@@ -72,15 +72,29 @@ final class ModulesNowhere extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        // Rules are keyed by menu item ID. The administrator form will
-        // populate this parameter once its configuration fields are added.
+        // The repeatable subform stores rules as a numerically indexed array.
+        // Find the single rule assigned to this menu item ID.
         $rules = $this->params->get('rules', []);
 
-        if (!is_array($rules) || !isset($rules[$itemId]) || !is_array($rules[$itemId])) {
+        if (!is_array($rules)) {
             return;
         }
 
-        $rule = $rules[$itemId];
+        $rule = null;
+
+        foreach ($rules as $configuredRule) {
+            if (
+                is_array($configuredRule)
+                && (int) ($configuredRule['menuitem'] ?? 0) === $itemId
+            ) {
+                $rule = $configuredRule;
+                break;
+            }
+        }
+
+        if ($rule === null) {
+            return;
+        }
 
         $excludedModules   = array_map('intval', (array) ($rule['modules'] ?? []));
         $excludedPositions = array_map('strval', (array) ($rule['positions'] ?? []));
