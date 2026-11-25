@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="position" addfieldpath="administrator/components/com_modules/models/fields">
+		<field
+			name="position"
+			type="moduleposition"
+			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_POSITION_LABEL"
+			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_POSITION_DESC"
+			maxlength="50"
+		/>
+	</fieldset>
+</form>
