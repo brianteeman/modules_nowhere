@@ -7,9 +7,28 @@
 	<files>
 		<folder plugin="modulesnowhere">services</folder>
 		<folder>src</folder>
+		<folder>forms</folder>
 	</files>
 	<languages>
 		<language tag="en-GB">language/en-GB/plg_system_modulesnowhere.ini</language>
 		<language tag="en-GB">language/en-GB/plg_system_modulesnowhere.sys.ini</language>
 	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="rules" label="PLG_SYSTEM_MODULESNOWHERE_FIELDSET_RULES">
+				<field
+					name="rules"
+					type="subform"
+					label="PLG_SYSTEM_MODULESNOWHERE_RULES_LABEL"
+					description="PLG_SYSTEM_MODULESNOWHERE_RULES_DESC"
+					formsource="forms/rule.xml"
+					multiple="true"
+					layout="joomla.form.field.subform.repeatable-table"
+					min="0"
+					max="100"
+					buttons="add,remove,move"
+				/>
+			</fieldset>
+		</fields>
+	</config>
 </extension>
