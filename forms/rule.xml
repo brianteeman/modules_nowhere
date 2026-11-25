@@ -3,15 +3,12 @@
 	<fieldset name="rule">
 		<field
 			name="menuitem"
-			type="sql"
+			type="menuitem"
 			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_MENUITEM_LABEL"
 			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_MENUITEM_DESC"
-			query="SELECT id, title FROM #__menu WHERE client_id = 0 AND published = 1 AND link LIKE '%option=com_content&amp;view=category%' ORDER BY menutype, lft"
-			key_field="id"
-			value_field="title"
+			published="1"
+			client_id="0"
 			required="true"
-			filter="integer"
-			layout="joomla.form.field.list-fancy-select"
 		/>
 		<field
 			name="modules"
@@ -27,15 +24,15 @@
 		/>
 		<field
 			name="positions"
-			type="sql"
+			type="subform"
 			label="PLG_SYSTEM_MODULESNOWHERE_FIELD_POSITIONS_LABEL"
 			description="PLG_SYSTEM_MODULESNOWHERE_FIELD_POSITIONS_DESC"
-			query="SELECT DISTINCT position AS value, position AS text FROM #__modules WHERE client_id = 0 AND position != '' ORDER BY position"
-			key_field="value"
-			value_field="text"
+			formsource="plugins/system/modulesnowhere/forms/position.xml"
 			multiple="true"
-			filter="string"
-			layout="joomla.form.field.list-fancy-select"
+			layout="joomla.form.field.subform.repeatable"
+			min="0"
+			max="50"
+			buttons="add,remove,move"
 		/>
 	</fieldset>
 </form>
