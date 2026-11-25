@@ -24,7 +24,7 @@
 					formsource="plugins/system/modulesnowhere/forms/rule.xml"
 					multiple="true"
 					layout="joomla.form.field.subform.repeatable"
-					min="0"
+					min="1"
 					max="100"
 					buttons="add,remove,move"
 				/>
