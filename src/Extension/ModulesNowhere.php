@@ -151,12 +151,11 @@ final class ModulesNowhere extends CMSPlugin implements SubscriberInterface
             return false;
         }
 
-        // Category Blog.
-        if (($parameters['view'] ?? '') === 'category' && ($parameters['layout'] ?? '') === 'blog') {
-            return true;
+        if (($parameters['view'] ?? '') !== 'category') {
+            return false;
         }
 
-        // List All Categories (Category List menu item).
-        return ($parameters['view'] ?? '') === 'categories';
+        // Category Blog uses layout=blog; Category List uses the default layout.
+        return in_array(($parameters['layout'] ?? 'default'), ['blog', 'default'], true);
     }
 }
