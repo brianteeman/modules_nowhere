@@ -6,7 +6,7 @@ The plugin is intended to provide the functionality described in [Modules Nowher
 
 ## Status
 
-The repository currently contains the initial project specification. The plugin has not yet been implemented.
+The repository contains the initial project specification and the Joomla 6 system plugin skeleton. The filtering logic and administrator configuration have not yet been implemented.
 
 ## Requirements and behaviour
 
@@ -49,7 +49,7 @@ A menu item must appear in no more than one rule. A rule may contain module excl
 
 ## Processing workflow
 
-The intended implementation uses Joomla's `onAfterCleanModuleList` system plugin event to adjust the module list before modules are rendered. The event and its use in Joomla's module helper will be verified against the Joomla 6 API during implementation.
+The implementation uses Joomla's `onAfterCleanModuleList` system plugin event to adjust the module list before modules are rendered. Joomla dispatches an `AfterCleanModuleListEvent` after `ModuleHelper::cleanModuleList()` and before returning the module list. The event exposes `getModules()` and `updateModules(array $modules)`, allowing the plugin to replace the list without relying on legacy by-reference listener arguments.
 
 ```mermaid
 flowchart TD
@@ -71,6 +71,7 @@ flowchart TD
 ## Important implementation notes
 
 - The `Itemid` is the rule key. SEF URLs and non-SEF URLs must both be supported; the implementation should use Joomla's resolved request/menu data rather than parse a URL string.
+- The plugin subscribes to `onAfterCleanModuleList` using Joomla's typed `AfterCleanModuleListEvent` and must call `updateModules()` with the filtered module array.
 - The active menu item must be checked against the supported menu item types. An article's category alone must never select a rule.
 - Filtering must happen before module rendering. Hiding rendered module HTML with CSS or output buffering is not acceptable.
 - Module exclusions should use module instance IDs, not module titles or module extension names.
