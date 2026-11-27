@@ -2,10 +2,12 @@
 <extension type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_MODULESNOWHERE</name>
     <author>Brian Teeman</author>
+    <authorEmail>brian@teeman.nety</authorEmail>
+    <authorUrl>https://brian.teeman.net</authorUrl>
     <creationDate>November 2026</creationDate>
     <copyright>(C) 2026 Brian Teeman</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>PLG_SYSTEM_MODULESNOWHERE_XML_DESCRIPTION</description>
     <namespace path="src">Joomla\Plugin\System\ModulesNowhere</namespace>
     <files>
